@@ -18,6 +18,7 @@ class ThreadExceptionExampleTest {
     }
 
     @Test
+    @DisplayName("setDefaultUncaughtExceptionHandler를 통해 모든 스레드의 예외를 처리할 핸들러를 지정할 수 있다.")
     void set_UncaughtExceptionHandler_for_all_threads() {
         //모든 스레드의 예외를 처리할 핸들러 지정.
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
@@ -41,6 +42,7 @@ class ThreadExceptionExampleTest {
     }
 
     @Test
+    @DisplayName("스레드마다 예외 핸들러를 각각 지정할 수 있다.")
     void set_UncaughtExceptionHandler_for_each_threads() {
         Thread thread1 = new Thread(() -> {
             throw new RuntimeException("예외 발생[1]");
