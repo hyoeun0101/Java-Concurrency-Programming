@@ -19,22 +19,22 @@ class ThreadExceptionExampleTest {
 
     @Test
     @DisplayName("setDefaultUncaughtExceptionHandler를 통해 모든 스레드의 예외를 처리할 핸들러를 지정할 수 있다.")
-    void set_UncaughtExceptionHandler_for_all_threads() {
+    void set_UncaughtExceptionHandler_for_all_threads() throws InterruptedException {
         //모든 스레드의 예외를 처리할 핸들러 지정.
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
             @Override
             public void uncaughtException(Thread t, Throwable e) {
                 // 스레드 내부에서 예외가 발생하면 호출됨.
-                System.out.println(t.getName() + "에서 예외 발생: " + e);
+                System.out.println("thread= " + t + ", throwalbe= " + e);
             }
         });
 
         Thread thread1 = new Thread(() -> {
-            throw new RuntimeException("예외 발생[1]");
+            throw new RuntimeException(Thread.currentThread().getName() + "에서 예외 발생");
         });
 
         Thread thread2 = new Thread(() -> {
-            throw new RuntimeException("예외 발생[2]");
+            throw new RuntimeException(Thread.currentThread().getName() + "에서 예외 발생");
         });
 
         thread1.start();
@@ -45,17 +45,17 @@ class ThreadExceptionExampleTest {
     @DisplayName("스레드마다 예외 핸들러를 각각 지정할 수 있다.")
     void set_UncaughtExceptionHandler_for_each_threads() {
         Thread thread1 = new Thread(() -> {
-            throw new RuntimeException("예외 발생[1]");
+            throw new RuntimeException(Thread.currentThread().getName() + "에서 예외 발생");
         });
         thread1.setUncaughtExceptionHandler((t, e)
-                -> System.out.println(t.getName() + "에서 예외 발생함[1]: " + e));
+                -> System.out.println("thread= " + t + ", throwalbe= " + e));
         thread1.start();
 
         Thread thread2 = new Thread(() -> {
-            throw new RuntimeException("예외 발생[2]");
+            throw new RuntimeException(Thread.currentThread().getName() + "에서 예외 발생");
         });
         thread2.setUncaughtExceptionHandler((t, e)
-                -> System.out.println(t.getName() + "에서 예외 발생함[2]:" + e));
+                -> System.out.println("thread= " + t + ", throwalbe= " + e));
         thread2.start();
     }
 
